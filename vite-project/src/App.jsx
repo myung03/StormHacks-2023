@@ -1,5 +1,6 @@
 import { Button, Stack } from '@chakra-ui/react'
-import Hero from './components/Hero';
+import React, { useEffect, useState } from 'react';
+import Sec from './components/Sec';
 import './App.css'
 
 function App() {
@@ -16,17 +17,13 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
-  const FileUpload = () => {
-    const handleFileUpload = (event) => {
-      const file = event.target.files[0];
-      // Do something with the selected file (e.g., send it to the server, process it, etc.)
-    };
-  }
-
   return (
     <div className='main'>
-    <Hero></Hero>
-</div>
+    
+
+    {sections.map((section, index) => 
+      <Sec key={index} text={section} />)}
+    </div>
 
   )
 }
