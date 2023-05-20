@@ -17,9 +17,26 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
+  const FileUpload = () => {
+    const handleFileUpload = (event) => {
+      const file = event.target.files[0];
+      // Do something with the selected file (e.g., send it to the server, process it, etc.)
+    };
+  }
+
   return (
     <div className='main'>
-    
+    <div>
+      <h1 class='font-extrabold leading-[3.25rem] text-4xl text-center'>
+      Tired of long and confusing slides? <br></br>
+      <span className='gradient'>Create your personalized lesson today.</span>
+      </h1>
+    </div>
+    <form>
+      <label htmlFor='file'>Submit a PDF of your lecture</label>
+      <input type='file' accept='.pdf' ></input>
+      <Button onClick={FileUpload}>Submit</Button>
+    </form>  
 
     {sections.map((section, index) => 
       <Sec key={index} text={section} />)}
