@@ -3,20 +3,9 @@ import { Button, Stack } from '@chakra-ui/react'
 
 const Hero = () => {
   return (
-            <Stack spacing={10} direction='row' align='center'>
-  <Button class='text-xs' colorScheme='red' size='xs'>
-    Button
-  </Button>
-  <Button colorScheme='teal' size='sm'>
-    Button
-  </Button>
-  <Button colorScheme='teal' size='md'>
-    Button
-  </Button>
-  <Button colorScheme='teal' size='lg'>
-    Button
-  </Button>
-</Stack>
+    <h1 class='rgba(0,0,0, 0.5)'>
+        Tired of long and confusing slides? <span>Create your personalized lesson today.</span>
+    </h1>
   )
 }
 
