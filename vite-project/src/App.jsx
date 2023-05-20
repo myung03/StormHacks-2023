@@ -38,8 +38,8 @@ function App() {
         </div>
         <form>
           <label htmlFor='file'>Submit a PDF of your lecture</label>
-          <input type='file' accept='.pdf' ></input>
-          <Button onClick={FileUpload}>Submit</Button>
+          <input type='file' accept='.pdf' onChange={FileUpload}></input>
+          <button className='cursor-pointer'>Submit</button>
         </form>
 
       {sections.map((section, index) => 
