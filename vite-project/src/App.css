@@ -27,3 +27,6 @@ color: rgb(124,215,223);
 color: linear-gradient(90deg, rgba(124,215,223,1) 13%, rgba(208,255,214,1) 70%);
 }
 
+.input {
+  border-style: none;
+}

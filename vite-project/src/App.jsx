@@ -37,11 +37,12 @@ function App() {
             <span className='gradient'>Create your personalized lesson today.</span>
           </h1>
         </div>
-        <form>
-          <label htmlFor='file'>Submit a PDF of your lecture</label>
-          <input type='file' accept='.pdf' onChange={FileUpload}></input>
-          <Button className='cursor-pointer'>Submit</Button>
-        </form>
+        <div className='flex flex-col mx-auto my-0 gap-[20px]'>
+
+          <input type='file' accept='.pdf' onChange={FileUpload} className="input">
+          </input>
+          <Button colorScheme='teal'>Submit</Button>
+          </div>
 
         {sections.slice(0, currentSection + 1).map((section, index) => 
           <Sec key={index} text={section} handleNextSection={handleNextSection} />)} 
