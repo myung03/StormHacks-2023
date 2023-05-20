@@ -1,4 +1,4 @@
-import { Button, Stack } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react';
 import Sec from './components/Sec';
 import './App.css'
@@ -34,8 +34,8 @@ function App() {
     </div>
     <form>
       <label htmlFor='file'>Submit a PDF of your lecture</label>
-      <input type='file' accept='.pdf' ></input>
-      <Button onClick={FileUpload}>Submit</Button>
+      <input type='file' accept='.pdf' onClick={FileUpload}></input>
+      <Button>Submit</Button>
     </form>  
 
     {sections.map((section, index) => 
