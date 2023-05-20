@@ -47,14 +47,14 @@ function App() {
       </Stack>
 =======
     <div>
-      <h1 class='font-extrabold leading-[3.25rem] text-4xl text-center'>
+      <h1 className='font-extrabold leading-[3.25rem] text-4xl text-center'>
       Tired of long and confusing slides? <br></br>
       <span className='gradient'>Create your personalized lesson today.</span>
       </h1>
     </div>
     <form>
       <label htmlFor='file'>Submit a PDF of your lecture</label>
-      <input type='file' accept='.pdf' onClick={FileUpload}></input>
+      <input type='file' accept='.pdf' onClick={FileUpload} className='cursor-pointer'></input>
       <Button>Submit</Button>
     </form>  
 
