@@ -39,7 +39,7 @@ function App() {
         <form>
           <label htmlFor='file'>Submit a PDF of your lecture</label>
           <input type='file' accept='.pdf' onChange={FileUpload}></input>
-          <button className='cursor-pointer'>Submit</button>
+          <Button className='cursor-pointer'>Submit</Button>
         </form>
 
       {sections.map((section, index) => 
