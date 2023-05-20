@@ -36,11 +36,10 @@ function App() {
           <span className='gradient'>Create your personalized lesson today.</span>
           </h1>
         </div>
-        <div className='flex flex-col mx-auto my-0 gap-[20px]'>
-
-          <input type='file' accept='.pdf' onChange={FileUpload} className="input">
+        <div className='flex flex-col items-center justify-around mx-auto my-0 gap-[20px]'>
+          <input type='file' accept='.pdf' onChange={FileUpload} className="ml-[15%]">
           </input>
-          <Button colorScheme='teal'>Submit</Button>
+          <Button className='max-w-xs' colorScheme='teal'>Submit</Button>
           </div>
 
       {sections.map((section, index) => 
