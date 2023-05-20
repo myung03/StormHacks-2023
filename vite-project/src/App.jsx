@@ -28,6 +28,7 @@ function App() {
 
   return (
     <div className='main'>
+<<<<<<< HEAD
       <Stack>
         <div>
           <h1 className='font-extrabold leading-[3.25rem] text-4xl text-center'>
@@ -44,6 +45,22 @@ function App() {
       {sections.map((section, index) => 
         <Sec key={index} text={section} />)}
       </Stack>
+=======
+    <div>
+      <h1 class='font-extrabold leading-[3.25rem] text-4xl text-center'>
+      Tired of long and confusing slides? <br></br>
+      <span className='gradient'>Create your personalized lesson today.</span>
+      </h1>
+    </div>
+    <form>
+      <label htmlFor='file'>Submit a PDF of your lecture</label>
+      <input type='file' accept='.pdf' onClick={FileUpload}></input>
+      <Button>Submit</Button>
+    </form>  
+
+    {sections.map((section, index) => 
+      <Sec key={index} text={section} />)}
+>>>>>>> 084e33f28690df6f6079b3160e2fbd78573bb840
     </div>
 
   )
