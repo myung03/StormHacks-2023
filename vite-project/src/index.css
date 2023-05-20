@@ -14,6 +14,12 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* adjust this to set the gap between items */
+}
+
 a {
   font-weight: 500;
   color: #646cff;

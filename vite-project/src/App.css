@@ -11,6 +11,12 @@
   padding: 120px 24px 160px 24px;
 }
 
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* adjust this to set the gap between items */
+}
+
 .main:before {
   /*background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);*/
   position: absolute;

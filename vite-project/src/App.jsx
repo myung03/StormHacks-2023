@@ -1,7 +1,9 @@
-import { Button, Stack } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react';
 import Sec from './components/Sec';
+import Stack from './components/Stack';
 import './App.css'
+
 
 function App() {
   const [sections, setSections] = useState([]);
@@ -26,20 +28,22 @@ function App() {
 
   return (
     <div className='main'>
-    <div>
-      <h1 class='font-extrabold leading-[3.25rem] text-4xl text-center'>
-      Tired of long and confusing slides? <br></br>
-      <span className='gradient'>Create your personalized lesson today.</span>
-      </h1>
-    </div>
-    <form>
-      <label htmlFor='file'>Submit a PDF of your lecture</label>
-      <input type='file' accept='.pdf' ></input>
-      <Button onClick={FileUpload}>Submit</Button>
-    </form>  
+      <Stack>
+        <div>
+          <h1 className='font-extrabold leading-[3.25rem] text-4xl text-center'>
+          Tired of long and confusing slides? <br></br>
+          <span className='gradient'>Create your personalized lesson today.</span>
+          </h1>
+        </div>
+        <form>
+          <label htmlFor='file'>Submit a PDF of your lecture</label>
+          <input type='file' accept='.pdf' ></input>
+          <Button onClick={FileUpload}>Submit</Button>
+        </form>
 
-    {sections.map((section, index) => 
-      <Sec key={index} text={section} />)}
+      {sections.map((section, index) => 
+        <Sec key={index} text={section} />)}
+      </Stack>
     </div>
 
   )
