@@ -1,9 +1,12 @@
-import React from 'react'
+// Sec.jsx
+import React from 'react';
 
-const Sec = () => {
+function Sec({ text }) {
   return (
-    <div>Sec</div>
-  )
+    <div className="section">
+      <h2>{text}</h2>
+    </div>
+  );
 }
 
-export default Sec
+export default Sec;
