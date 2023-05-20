@@ -1,7 +1,7 @@
 import PyPDF2
 import openai
 
-openai.api_key = "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"
+openai.api_key = "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"
 openai.organization = "org-rLLsbN71s2gi6Qp3oPUHXieH"
 
 def extract_text_from_pdf(file_name):
@@ -33,8 +33,8 @@ def create_lesson():
                                    
     create_lesson_messages.append({"role": "assistant", "content": raw_lesson_text})                         
     create_lesson_messages.append({"role": "assistant", "content": '''Using the above data, create a structured lesson
-    that breaks it down into parts and explains information in a detailed and understandable way. Seperate your lesson into 
-    clear sections and make sure each section is seperated by a <?!>'''})
+    that breaks it down into parts and explains information in a step-by-step manner with great detail in each section. Seperate your lesson into 
+    clear sections and mark the end of each section with a <?!> We will use this for seperating sections later with code.'''})
     
 
     create_lesson_response = openai.ChatCompletion.create(
@@ -49,6 +49,7 @@ def create_lesson():
         for lesson_part in lesson_parts:
             file.write(lesson_part)
             file.write('<?!>')  # add a separator between sections
+    print("Generation Finished")
 
 
 

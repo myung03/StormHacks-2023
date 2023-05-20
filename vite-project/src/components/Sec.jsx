@@ -1,5 +1,6 @@
 // Sec.jsx
 import React from 'react';
+import './Sec.css'
 
 function Sec({ text }) {
   return (

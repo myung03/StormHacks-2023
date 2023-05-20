@@ -4,7 +4,11 @@ import './Stack.css'
 function Stack({ children }) {
   return (
     <div className="stack">
-      {children}
+      {React.Children.map(children, (child, i) => (
+        <div className="stack-item" key={i}>
+          {child}
+        </div>
+      ))}
     </div>
   );
 }
