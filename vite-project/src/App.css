@@ -9,11 +9,10 @@
   display: flex;
   justify-content: center;
   padding: 120px 24px 160px 24px;
-  pointer-events: none;
 }
 
 .main:before {
-  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
+  /*background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);*/
   position: absolute;
   content: "";
   z-index: 2;
@@ -24,7 +23,7 @@
 
 .main:after {
   content: "";
-  background-image: url("./assets/grid.svg");
+  background-image: url("../public/grid.svg");
   z-index: 1;
   position: absolute;
   width: 100%;
@@ -32,5 +31,10 @@
   top: 0;
   opacity: 0.4;
   filter: invert(1);
+}
+
+.gradient {
+color: rgb(124,215,223);
+color: linear-gradient(90deg, rgba(124,215,223,1) 13%, rgba(208,255,214,1) 70%);
 }
 
