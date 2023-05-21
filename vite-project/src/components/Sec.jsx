@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Heading, Text, useDisclosure, SlideFade } from '@chakra-ui/react';
-import { CheckIcon, Search2Icon, QuestionIcon } from '@chakra-ui/icons';
+import { Button, Heading, Text, useDisclosure, SlideFade, Collapse } from '@chakra-ui/react';
+import { CheckIcon, Search2Icon, QuestionIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import './Sec.css';
@@ -12,7 +12,7 @@ const CustomParagraph = ({ children }) => (
   </Text>
 );
 
-const CustomHeading = ({ level, children }) => {
+const CustomHeading = ({ level, children}) => {
   const headingSizes = ['xl', 'lg', 'md', 'sm', 'xs'];
   const size = headingSizes[Math.min(level - 1, headingSizes.length - 1)];
 
@@ -23,9 +23,18 @@ const CustomHeading = ({ level, children }) => {
   );
 };
 
+const ScrollToTop = () => {
+
+  // Scroll to the top of the window
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
 const CustomStrong = ({ children }) => <Text as="strong">{children}</Text>;
 
-function Sec({ text, handleNextSection }) {
+function Sec({ text, handleNextSection, lastSection, conclusion}) {
   const [inputText, setInputText] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [showNextSection, setShowNextSection] = useState(true);
@@ -141,15 +150,12 @@ function Sec({ text, handleNextSection }) {
           {text}
         </ReactMarkdown>
       </div>
-      <div className="button-container">
-        <Button leftIcon={<Search2Icon />}colorScheme='yellow' onClick={onToggle}>Ask a Question</Button>
-      {showNextSection && <Button rightIcon={<CheckIcon/>}colorScheme='green' onClick={handleNext} className='ml-[20px] pr-7 text-center'>Next Section</Button>}
-    </div>
+
       {onToggle && (
-        <SlideFade  className="chat-container glassmorphism w-[50%]" in={isOpen} animateOpacity>
+        <Collapse  className="chat-container glassmorphism w-[50%]" in={isOpen} animateOpacity>
         <div id="chat-container">
           <h4 className='pb-5'>Still confused? <strong>Feel free to ask!</strong></h4>
-          <Button rightIcon={<QuestionIcon/>} className='mb-10'colorScheme='yellow' onClick={handleRequestQuiz}>Quiz Me!</Button>
+          { !conclusion && <Button rightIcon={<QuestionIcon/>} className='mb-10'colorScheme='yellow' onClick={handleRequestQuiz}>Quiz Me!</Button> }
         <div className="chat-history">
           {chatHistory.map((message, index) => (
             <ReactMarkdown
@@ -177,9 +183,17 @@ function Sec({ text, handleNextSection }) {
           <Button onClick={handleSend}>Send</Button>
         </div>
       </div>
-      </SlideFade>
+      </Collapse>
     )}
+          <div className="button-container">
+       { !conclusion && !isOpen && <Button leftIcon={<Search2Icon />}colorScheme='yellow' onClick={onToggle}>Ask a Question</Button> }
+       { !conclusion && isOpen && <Button leftIcon={<ChevronUpIcon />}colorScheme='yellow' onClick={onToggle}>Collapse</Button> }
+      {!conclusion && showNextSection && !lastSection && <Button rightIcon={<CheckIcon/>}colorScheme='green' onClick={handleNext} className='ml-[20px] pr-7 text-center'>Next Section</Button>}
+      {!conclusion && showNextSection && lastSection && <Button rightIcon={<CheckIcon/>}colorScheme='green' onClick={handleNext} className='ml-[20px] pr-7 text-center'>Complete Lesson</Button>}
+      {conclusion && showNextSection && <Button rightIcon={<CheckIcon/>}colorScheme='green' onClick={ScrollToTop} className='ml-[20px] pr-7 text-center'>Back to Top</Button>}
+    </div>
   </div>
+  
 );
 }
 

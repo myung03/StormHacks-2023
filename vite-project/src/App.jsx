@@ -20,7 +20,8 @@ function App() {
       .then(response => response.text())
       .then(data => {
         const splitData = data.split('<?!>');
-        setSections(splitData.slice(0, -1));
+        splitData.push("## You completed this **Lesson**")
+        setSections(splitData);
       })
       .catch(err => console.error(err));
   }, []);
@@ -64,37 +65,40 @@ function App() {
     }
   };
 
-  const handleProcessFile = () => {
-    event.stopPropagation();
-
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      setIsLoading(true); // Set isLoading to true
-
-      fetch('http://localhost:5174/uploads', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          fetch('http://localhost:5174/generatedlessoncontent.txt')
-            .then(response => response.text())
-            .then(data => {
-              const splitData = data.split('<?!>');
-              setSections(splitData.slice(0, -1));
-              setIsLoading(false); // Set isLoading to false after data is updated
-            })
-            .catch(err => console.error(err));
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          setIsLoading(false); // Set isLoading to false in case of error
-        });
-    }
-  };
+  {isLoading ? (
+    <div className="loading-screen-container">
+      <div className="loading-screen">
+        <Spinner className="loading-spinner" size="xl" />
+        <p className="loading-message">Loading...</p>
+      </div>
+    </div>
+  ) : (
+    <>
+      {sections.slice(0, currentSection).map((section, index) => (
+        <Sec
+          key={index}
+          text={section}
+          handleNextSection={handleNextSection}
+          lastSection={false}
+        />
+      ))}
+      {currentSection === sections.length - 1 ? (
+        <Sec
+          key={sections.length}
+          text="You completed the lesson!"
+          handleNextSection={handleNextSection}
+          lastSection={true}
+        />
+      ) : (
+        <Sec
+          key={currentSection}
+          text={sections[currentSection]}
+          handleNextSection={handleNextSection}
+          lastSection={false}
+        />
+      )}
+    </>
+  )}
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -195,18 +199,24 @@ function App() {
           </div>
         </div>
 
-        {isLoading ? ( // Show loading screen if isLoading is true
-        <div className="loading-screen-container">
-          <div className="loading-screen">
-            <Spinner className="loading-spinner" size="xl" />
-            <p className="loading-message">Loading...</p>
-          </div>
-        </div>
-        ) : (
-          sections.slice(0, currentSection + 1).map((section, index) => (
-            <Sec key={index} text={section} handleNextSection={handleNextSection} />
-          ))
-        )}
+        {isLoading ? (
+  <div className="loading-screen-container">
+    <div className="loading-screen">
+      <Spinner className="loading-spinner" size="xl" />
+      <p className="loading-message">Loading...</p>
+    </div>
+  </div>
+) : (
+  sections.slice(0, currentSection + 1).map((section, index) => (
+    <Sec
+      key={index}
+      text={section}
+      lastSection={index === sections.length - 2}
+      conclusion={index === sections.length - 1}
+      handleNextSection={handleNextSection}
+    />
+  ))
+)}
       </Stack>
     </div>
   );
