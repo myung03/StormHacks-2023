@@ -12,9 +12,6 @@
   padding: 120px 24px 160px 24px;
 }
 
-
-
-
 .main:after {
   content: "";
   background-image: url("/grid.svg");

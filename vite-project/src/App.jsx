@@ -1,5 +1,6 @@
-import { Button, Spinner } from '@chakra-ui/react';
-import { CloseIcon, DownloadIcon, EditIcon } from '@chakra-ui/icons';
+import { Button, Spinner, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { CloseIcon, EditIcon } from '@chakra-ui/icons';
+import getUnicodeFlagIcon from 'country-flag-icons/unicode'
 import React, { useEffect, useState, useRef } from 'react';
 import Sec from './components/Sec';
 import Stack from './components/Stack';
@@ -7,6 +8,7 @@ import './App.css';
 
 function App() {
   const [sections, setSections] = useState([]);
+  const [language, setLanguage] = useState('English');
   const [currentSection, setCurrentSection] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // Added isLoading state
@@ -26,6 +28,10 @@ function App() {
     setCurrentSection(currentSection + 1);
   };
 
+  //sets language for lesson to be in
+  const onLanguageChange = (str) => {
+    setLanguage(str);
+  }
   const onButtonClick = () => {
     inputFile.current.click();
   };
@@ -87,15 +93,46 @@ function App() {
 
   return (
     <div className='main'>
+    
       <Stack>
+      <Tabs className='mt-[-60px] my-[60px]'>
+  <TabList>
+    <Tab onClick={() => onLanguageChange('English')}>English {getUnicodeFlagIcon('CA')}</Tab>
+    <Tab onClick={() => onLanguageChange('French')}>Français {getUnicodeFlagIcon('FR')}</Tab>
+    <Tab onClick={() => onLanguageChange('Mandarin')}>中文 {getUnicodeFlagIcon('CN')}</Tab>
+    <Tab onClick={() => onLanguageChange('German')}>Deutsch {getUnicodeFlagIcon('DE')}</Tab>
+    <Tab onClick={() => onLanguageChange('Japanese')}>日本 {getUnicodeFlagIcon('JP')}</Tab>
+  </TabList>
+
+  <TabPanels>
+    <TabPanel>
+      <p>Placeholder Name will provide a lesson in English.</p>
+    </TabPanel>
+    <TabPanel>
+      <p>Placeholder Name donnera une leçon en français.</p>
+
+    </TabPanel>
+    <TabPanel>
+      <p>Placeholder Name 会用中文上课。</p>
+
+    </TabPanel>
+    <TabPanel>
+      <p>Placeholder Name wird eine Unterrichtsstunde auf Deutsch geben.</p>
+
+    </TabPanel>
+    <TabPanel>
+      <p>先生が日本語でレッスンを行います。</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
         <div>
-          <h1 className='font-extrabold leading-[3.25rem] text-4xl text-center pb-10'>
+          <h1 className='font-extrabold leading-[3.25rem] text-4xl text-center pb-[5%]'>
             Tired of long and confusing slides? <br></br>
             <span className='gradient'>Create your personalized lesson today.</span>
           </h1>
         </div>
 
-        <div className="file-upload">
+        <div className="pb-10 file-upload">
           <div
             className={`file-drop-area ${selectedFile ? 'file-drop-area-active' : ''}`}
             onDrop={handleDrop}

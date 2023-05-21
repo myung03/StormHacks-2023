@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Heading, Text } from '@chakra-ui/react';
+import { Button, Heading, Text, useDisclosure, SlideFade } from '@chakra-ui/react';
 import { ChevronUpIcon, CheckIcon, Search2Icon } from '@chakra-ui/icons';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
@@ -91,6 +91,8 @@ function Sec({ text, handleNextSection }) {
     }
   }, [chatHistory]);
 
+  const { isOpen, onToggle } = useDisclosure()
+
   return (
     <div className="section sidebar">
       <div className="instruction">
@@ -108,16 +110,14 @@ function Sec({ text, handleNextSection }) {
           {text}
         </ReactMarkdown>
       </div>
-      {showSubsection && (
-        <div className="chat-container slide-bottom glassmorphism" id="chat-container">
+      <div className="button-container">
+        <Button leftIcon={<Search2Icon />}colorScheme='yellow' onClick={onToggle}>Ask a Question</Button>
+      {showNextSection && <Button rightIcon={<CheckIcon/>}colorScheme='green' onClick={handleNext} className='ml-[20px] pr-7 text-center'>Next Section</Button>}
+    </div>
+      {onToggle && (
+        <SlideFade className="chat-container glassmorphism" in={isOpen} animateOpacity>
+        <div className="chat-container glassmorphism" id="chat-container">
           <h4 className='pb-5'>Still confused? <strong>Feel free to ask!</strong></h4>
-        <Button
-          className="collapse-button"
-          onClick={toggleSubsection}
-          style={{ position: 'absolute', top: '10px', right: '10px' }}
-        >
-          <ChevronUpIcon />
-        </Button>
         <div className="chat-history">
           {chatHistory.map((message, index) => (
             <div key={index} className={`message ${message.type}`}>
@@ -134,13 +134,8 @@ function Sec({ text, handleNextSection }) {
           <Button onClick={handleSend}>Send</Button>
         </div>
       </div>
+      </SlideFade>
     )}
-    <div className="button-container">
-      {!showSubsection && (
-        <Button leftIcon={<Search2Icon />}colorScheme='yellow' onClick={toggleSubsection}>Ask a Question</Button>
-      )}
-      {showNextSection && <Button rightIcon={<CheckIcon/>}colorScheme='yellow' onClick={handleNext} className='ml-[20px] pr-7 text-center'>Next Section</Button>}
-    </div>
   </div>
 );
 }

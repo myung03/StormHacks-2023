@@ -19,6 +19,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^1.4.0",
     "cors": "^2.8.5",
+    "country-flag-icons": "^1.5.7",
     "express": "^4.18.2",
     "framer-motion": "^10.12.12",
     "fs": "^0.0.1-security",
