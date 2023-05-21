@@ -37,16 +37,21 @@ function App() {
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    handleFileUpload(file);
+    if (file.type === 'application/pdf') {
+      handleFileUpload(file);
+    } else {
+      console.error('File is not a PDF');
+      // You can also set some state here to show an error message on your UI
+    }
   };
 
-  const handleProcessFile = (event) => {
+  const handleProcessFile = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
-
+  
       // Send the file to the server using an HTTP request
-      fetch('/uploads', {
+      fetch('http://localhost:5174/uploads', {
         method: 'POST',
         body: formData,
       })
@@ -58,7 +63,7 @@ function App() {
           console.error('Error:', error);
         });
     }
-    }
+  };
 
   const handleDragOver = (event) => {
     event.preventDefault();
