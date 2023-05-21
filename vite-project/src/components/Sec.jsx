@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Heading, Text, useDisclosure, SlideFade } from '@chakra-ui/react';
 import { CheckIcon, Search2Icon, QuestionIcon } from '@chakra-ui/icons';
 import ReactMarkdown from 'react-markdown';
@@ -41,36 +41,72 @@ function Sec({ text, handleNextSection }) {
         message: inputText,
         type: 'user-message',
       };
-      setChatHistory((prevHistory) => [...prevHistory, userMessage]);
   
-      // Display "thinking" message while waiting for response
+      const updatedHistory = [...chatHistory, userMessage];
+      setChatHistory(updatedHistory);
+  
       const thinkingMessage = {
         user: 'Teacher',
         message: 'Thinking...',
         type: 'bot-message',
       };
-      setChatHistory((prevHistory) => [...prevHistory, thinkingMessage]);
+  
+      const updatedHistoryWithThinkingMessage = [...updatedHistory, thinkingMessage];
+      setChatHistory(updatedHistoryWithThinkingMessage);
   
       try {
-        // Generate response from the model
-        const botMessage = await createChatMessage(inputText, text); // Pass the `text` parameter here
+        const botMessage = await createChatMessage(inputText, text, chatHistory);
         const responseMessage = {
           user: 'Teacher',
           message: botMessage,
           type: 'bot-message',
         };
-        setChatHistory((prevHistory) => [
-          ...prevHistory.filter((msg) => msg !== thinkingMessage),
-          responseMessage,
-        ]);
+  
+        const updatedHistoryWithResponse = [...updatedHistoryWithThinkingMessage.filter((msg) => msg !== thinkingMessage), responseMessage];
+        setChatHistory(updatedHistoryWithResponse);
       } catch (error) {
-        // Handle error if API call fails
         console.error('Failed to create chat message:', error);
       }
   
       setInputText('');
     }
   };
+  
+  const handleRequestQuiz = async () => {
+    const userMessage = {
+      user: 'User',
+      message: "Quiz Please!",
+      type: 'user-quiz-message',
+    };
+  
+    const updatedHistory = [...chatHistory, userMessage];
+    setChatHistory(updatedHistory);
+  
+    const thinkingMessage = {
+      user: 'Teacher',
+      message: 'Creating Quiz...',
+      type: 'bot-quiz-message',
+    };
+  
+    const updatedHistoryWithThinkingMessage = [...updatedHistory, thinkingMessage];
+    setChatHistory(updatedHistoryWithThinkingMessage);
+  
+    try {
+      const botMessage = await createChatMessage("Give me a 1 question multiple choice quiz, with no answer and ask the user for their answer, put the options in bullet points on the above topic and write the quiz in raw mdx code and use bold and headers.", text, chatHistory);
+      const responseMessage = {
+        user: 'Teacher',
+        message: botMessage,
+        type: 'bot-quiz-message',
+      };
+  
+      const updatedHistoryWithResponse = [...updatedHistoryWithThinkingMessage.filter((msg) => msg !== thinkingMessage), responseMessage];
+      setChatHistory(updatedHistoryWithResponse);
+    } catch (error) {
+      // Handle error if API call fails
+      console.error('Failed to create chat message:', error);
+    }
+  };
+
 
   const handleNext = () => {
     handleNextSection();
@@ -113,12 +149,23 @@ function Sec({ text, handleNextSection }) {
         <SlideFade  className="chat-container glassmorphism w-[50%]" in={isOpen} animateOpacity>
         <div id="chat-container">
           <h4 className='pb-5'>Still confused? <strong>Feel free to ask!</strong></h4>
-          <Button rightIcon={<QuestionIcon/>} colorScheme='yellow'>Quiz Me!</Button>
+          <Button rightIcon={<QuestionIcon/>} className='mb-10'colorScheme='yellow' onClick={handleRequestQuiz}>Quiz Me!</Button>
         <div className="chat-history">
           {chatHistory.map((message, index) => (
-            <div key={index} className={`message ${message.type}`}>
-              <span className="user">{message.user}:</span> {message.message}
-            </div>
+            <ReactMarkdown
+              key={index}
+              className={`message ${message.type}`}
+              children={`**${message.user}:** ${message.message}`}
+              plugins={[gfm]}
+              components={{
+                p: CustomParagraph,
+                h1: (props) => <CustomHeading level={1} {...props} />,
+                h2: (props) => <CustomHeading level={2} {...props} />,
+                h3: (props) => <CustomHeading level={3} {...props} />,
+                strong: CustomStrong,
+              }}
+            />
+
           ))}
         </div>
         <div className="chat-input">
