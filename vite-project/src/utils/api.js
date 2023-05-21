@@ -19,7 +19,7 @@ export async function createChatMessage(inputText, text) {
     }, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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',
+        'Authorization': 'Bearer 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',
       },
     });
 
