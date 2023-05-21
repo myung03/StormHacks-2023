@@ -15,6 +15,8 @@ function App() {
   const inputFile = useRef(null);
   const componentRefs = useRef([]);
 
+
+
   useEffect(() => {
     fetch('http://localhost:5174/generatedlessoncontent.txt')
       .then(response => response.text())
@@ -26,8 +28,48 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
+    
+  const onButtonClick = () => {
+    inputFile.current.click();
+  };
+
+
+
   const handleNextSection = () => {
     setCurrentSection(currentSection + 1);
+  };
+
+  const handleProcessFile = () => {
+    event.stopPropagation();
+
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      setIsLoading(true); // Set isLoading to true
+
+      fetch('http://localhost:5174/uploads', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          fetch('http://localhost:5174/generatedlessoncontent.txt')
+            .then(response => response.text())
+            .then(data => {
+              const splitData = data.split('<?!>');
+              splitData.push("## You completed this **Lesson**")
+              setSections(splitData);
+              setIsLoading(false); // Set isLoading to false after data is updated
+            })
+            .catch(err => console.error(err));
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          setIsLoading(false); // Set isLoading to false in case of error
+        });
+    }
   };
 
   //sets language for lesson to be in
@@ -105,9 +147,12 @@ function App() {
   };
 
   const handleClearFile = (event) => {
-    event.preventDefault();
+    event.stopPropagation();
     setSelectedFile(null);
-  };
+    if (inputFile && inputFile.current) {
+        inputFile.current.value = '';
+    }
+};
 
   return (
     <div className='main'>

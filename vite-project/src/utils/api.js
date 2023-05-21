@@ -23,9 +23,10 @@ export async function createChatMessage(inputText, text, chatHistory) {
         content: "For quizzes, Don't tell the user anything about markdown, get the user to choose a, b, c, ...  Say: Please type your answer below:" 
       },
       
+      
       { 
         role: 'user', 
-        content: "The info is " + text 
+        content: "The info is " + text + " give your responses in the language of the text chunk" 
       }
     ];
     

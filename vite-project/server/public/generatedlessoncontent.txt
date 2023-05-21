@@ -1,36 +1,55 @@
-## COMM 205: Introduction to Management Information Systems
-### Lecture 23: Merging Datasets, Part II
+## Introduction
+In this lecture, we will cover the topic of merging datasets using **inner_join()** and **left_join()** methods. Merging datasets allows us to match observations from two datasets based on matching values in a particular attribute(s). We will cover the differences between these two methods and how to use them in R. Additionally, we will discuss non-one-to-one matching and how to merge datasets that do not have key variables that uniquely identify each observation. 
 
-In this lecture, we will cover the second part of Merging Datasets. We have already covered the first part in the previous lecture. In this section, we will cover two kinds of methods to merge datasets: **inner_join()** and **left_join()**. Joining allows us to match observations from two datasets based on matching values in a particular attribute(s). 
+<?!>## Inner Join Function
+The **inner_join()** function is used to merge two datasets on a specific attribute(s). This function returns only the matching observations from both datasets based on the specified attribute(s). 
 
-It is important to note that when merging two datasets, the variable names of the attribute(s) in both datasets should be the same to use the default syntax. It is also recommended that the variable type of the key variable(s) in both datasets also be the same.
+To use the **inner_join()** function, the variable names of the attribute(s) in both datasets should be the same. It is also recommended that the variable type of the key variable(s) in both datasets also be the same.
 
-<?!>### left_join() FUNCTION
-The **left_join()** function returns all rows from x, and all columns from x and y. Let's use the same example1 and example2 datasets from before. Suppose this time, you want to improve the example1 dataset by bringing as much information from the example2 as you can. Thus, you want to keep all the observations in the example1 dataset and bring new information for the matching observations in the example2 dataset. **left_join()** is suitable for this task.
-
-To do this, enter into the Console:
-```R
-merged2 <- left_join(example1, example2)
-```
-R will return "Joining, by = c("gvkey", "fyear")". For matching values of the joining attribute – in this case, the combination of gvkey and fyear, **left_join()** links the information appearing in both datasets. Those observations in the “left” dataset which do not have matching observations in the other dataset will be retained in the resultant merged dataset, while those observations in the “right” dataset which do not have matching observations in the other dataset will not be retained in the resultant dataset. This explains why assets and sales are missing for AAR corporation in 2014 and 2015. The example2 dataset does not cover those years (it runs from fiscal year 2016 through 2018).
-
-<?!>### NON-ONE-TO-ONE MATCHING
-When you merge two datasets whose key variable(s) uniquely identify each observation within the dataset, this kind of merge is called a one-to-one merge. However, the attribute(s) (i.e., column(s)) used as a basis of matching the observations in two data sets do not have to be key variables for both datasets. In such situations, an observation in one dataset can match with multiple observations in the other datasets through non-one-to-one matching. However, the variable or variable(s) to perform the merge should uniquely identify at least one of the datasets.
-
-Suppose you have two datasets, the first is a subset of the full North American Stock Market 1994-2018.rds dataset. example3.rds contains gvkey, fyear, and industry code (naicsh) of all observations in fyear==2016. We can also create example3 quite easily:
+To perform an inner join, enter the following code into the console:
 
 ```R
-example3 <- companies %>%
-filter(fyear==2016, !is.na(naicsh)) %>%
-select(gvkey, fyear, conm, naicsh)
+merged_dataset <- inner_join(dataset1, dataset2, by = "attribute_name")
 ```
-This is a picture of example3.
 
-NAICS_2_6_digit_codes.rds contains the NAICS code and industry description for more than 2,200 industries (from the 2 to the 6 digit level). You want to merge the two datasets, so that each observation will have the following variables: gvkey, fyear, naicsh, and NAICS_description. This will attempt to add the industry description to every observation in the Example3 dataset.
+This code will merge dataset1 and dataset2 based on the attribute named "attribute_name" and create a new dataset named **merged_dataset**. 
 
-To do this, enter into the Console:
+<?!>## Left Join Function
+The **left_join()** function is used to merge two datasets and keep all observations from the left dataset, while bringing in new information from the matching observations in the right dataset.
+
+To use the **left_join()** function, enter the following code into the console:
+
+```R
+merged_dataset <- left_join(dataset1, dataset2, by = "attribute_name")
+```
+
+This code will merge dataset1 and dataset2 based on the attribute named "attribute_name" and create a new dataset named **merged_dataset**. The resulting dataset will contain all observations from dataset1 and all columns from both dataset1 and dataset2.
+
+<?!>## Non-One-to-One Matching
+Non-one-to-one matching occurs when two datasets are merged based on attributes that do not uniquely identify each observation within the dataset. In this situation, an observation in one dataset can match with multiple observations in the other dataset.
+
+To perform a non-one-to-one merge, the variable or variable(s) used to perform the merge should uniquely identify at least one of the datasets.
+
+To merge datasets with non-one-to-one matching, use the **left_join()** function and specify the attributes to merge on.
+
+<?!>## Example
+Suppose we have three datasets, example1, example2, and example3. We want to merge example1 and example2 using the **left_join()** function, and merge example3 with NAICS_2_6_digit_codes using the **left_join()** function.
+
+To merge example1 and example2, enter the following code into the console:
+
+```R
+merged1 <- left_join(example1, example2, by = c("gvkey", "fyear"))
+```
+
+This code will merge example1 and example2 based on the attributes "gvkey" and "fyear", and create a new dataset named **merged1**.
+
+To merge example3 with NAICS_2_6_digit_codes, enter the following code into the console:
+
 ```R
 merged3 <- left_join(example3, NAICS_2_6_digit_codes, by = c("naicsh" = "NAICS"))
 ```
 
-Here’s what you should see as a result:
+This code will merge example3 and NAICS_2_6_digit_codes based on the attributes "naicsh" and "NAICS", and create a new dataset named **merged3**.
+
+<?!>## Conclusion
+Merging datasets is a powerful tool that allows us to combine information from multiple sources. The **inner_join()** and **left_join()** functions are two methods for merging datasets in R. It is important to understand the differences between these two functions and how to use them appropriately. Additionally, non-one-to-one matching can be used to merge datasets that do not have key variables that uniquely identify each observation.
