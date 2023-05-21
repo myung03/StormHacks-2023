@@ -32,7 +32,24 @@ function App() {
   //sets language for lesson to be in
   const onLanguageChange = (str) => {
     setLanguage(str);
-  }
+  
+    // Make a POST request to update the language on the server
+    fetch('http://localhost:5174/language', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ language: str }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // Optional: handle the response from the server
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
+  
   const onButtonClick = () => {
     inputFile.current.click();
   };
