@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
+    "start": "server/server.cjs",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "cd server && npm install && npm run build",
     "dev": "vite",
     "preview": "vite preview"
   },
