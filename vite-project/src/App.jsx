@@ -107,13 +107,29 @@ function App() {
               accept=".pdf"
               onChange={(event) => handleFileUpload(event.target.files[0])}
               className='input-file'
+              disabled={isLoading}
             />
             {selectedFile ? (
               <div className='mt-5 font-medium'>
                 <h3>{selectedFile.name}</h3>
                 <div className="mt-5 ml-3 flex gap-[20px] items-center justify-center">
-                  <Button leftIcon={<CloseIcon />} onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
-                  <Button rightIcon={<EditIcon />} onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
+                <Button
+  leftIcon={<CloseIcon />}
+  onClick={handleClearFile}
+  colorScheme='twitter'
+  isDisabled={isLoading}
+>
+  Clear File
+</Button>
+
+<Button
+  rightIcon={<EditIcon />}
+  onClick={handleProcessFile}
+  colorScheme='facebook'
+  isDisabled={isLoading || !selectedFile}
+>
+  Process File
+</Button>
                 </div>
               </div>
             ) : null}
