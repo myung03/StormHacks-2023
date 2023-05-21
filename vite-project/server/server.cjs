@@ -5,8 +5,11 @@ const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
 
+let currentLanguage = 'English'; // Default language
+
 const app = express();
 app.use(cors());
+app.use(express.json()); // Add this line to parse the request body as JSON
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,51 +28,13 @@ let currentPythonProcess = null;
 
 // POST endpoint for file uploads
 app.post('/uploads', upload.single('file'), (req, res) => {
-  try {
-    // Check if there is a current Python process and terminate it
-    if (currentPythonProcess) {
-      currentPythonProcess.kill();
-    }
+  // Rest of the code...
+});
 
-    // Remove all files in the "uploads" folder except the one that was just uploaded
-    fs.readdir(path.join(__dirname, 'uploads'), (err, files) => {
-      if (err) {
-        console.log('Error reading uploads folder:', err);
-        return res.status(500).send({ status: 'ERROR', message: 'Error deleting files in uploads folder' });
-      }
-
-      // Delete each file in the "uploads" folder except the one that was just uploaded
-      for (const file of files) {
-        if (file !== req.file.filename) { // Skip deleting the current file
-          fs.unlink(path.join(__dirname, 'uploads', file), (err) => {
-            if (err) {
-              console.log('Error deleting file:', err);
-            }
-          });
-        }
-      }
-
-      // Call the Python script with the path of the uploaded file as an argument
-      currentPythonProcess = spawn('python', [path.join(__dirname, 'lessoncontentgeneration', 'pdflesson.py'), req.file.path]);
-      let result = '';
-
-      // Collect data from the script
-      currentPythonProcess.stdout.on('data', function (data) {
-        result += data.toString();
-      });
-
-      // In close event, we are sure that the stream from the child process is closed
-      currentPythonProcess.on('close', (code) => {
-        if (code !== 0) {
-          return res.status(500).send({ status: 'ERROR', message: 'Python script error' });
-        }
-
-        return res.send({ status: 'OK', message: 'File uploaded and processed', data: result });
-      });
-    });
-  } catch (err) {
-    res.status(500).send(err);
-  }
+app.post('/language', (req, res) => {
+  const { language } = req.body;
+  currentLanguage = language;
+  res.send({ status: 'OK', message: 'Language updated successfully' });
 });
 
 app.get('/', (req, res) => {

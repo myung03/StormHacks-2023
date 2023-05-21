@@ -2,6 +2,7 @@ import pdfplumber
 import openai
 import os
 import glob
+import sys
 
 openai.api_key = "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"
 openai.organization = "org-rLLsbN71s2gi6Qp3oPUHXieH"
@@ -32,6 +33,8 @@ def create_lesson():
     raw_lesson_text = ""
     for file_name in pdf_files:
         raw_lesson_text += extract_text_from_pdf(file_name)
+    
+    print("Generation Started")
         
     create_lesson_messages = []
     create_lesson_messages.append({"role": "system", "content": '''You are a teacher that uses 
