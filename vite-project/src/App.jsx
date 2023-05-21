@@ -1,4 +1,5 @@
 import { Button } from '@chakra-ui/react'
+import { CloseIcon, DownloadIcon, EditIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState, useRef } from 'react';
 import Sec from './components/Sec';
 import Stack from './components/Stack';
@@ -77,9 +78,9 @@ function App() {
         {selectedFile ? (
           <div className='mt-5 font-medium'>
             <h3>{selectedFile.name}</h3>
-            <div className="mt-5 flex gap-[20px] items-center justify-center">
-              <Button onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
-              <Button onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
+            <div className="mt-5 ml-3 flex gap-[20px] items-center justify-center">
+              <Button leftIcon={<CloseIcon />}onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
+              <Button rightIcon={<EditIcon />}onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
             </div>
           </div>
         ) : (
