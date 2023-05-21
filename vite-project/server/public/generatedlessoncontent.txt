@@ -1,43 +1,52 @@
-## Introduction à la fusion de jeux de données
+## セクション1: データセットのマージ方法
 
-Dans cette leçon, nous allons apprendre à fusionner des jeux de données en utilisant deux méthodes principales: **inner_join()** et **left_join()**. Ces fonctions sont essentielles pour combiner des informations provenant de différentes sources et les organiser dans un format structuré.
+このコースでは、データセットをマージするための2つの方法をカバーします。
 
-<?!>## Préparer les jeux de données pour la fusion
+1. **inner_join()**
+2. **left_join()**
 
-Avant de fusionner les jeux de données, il est important de s'assurer que les variables clés ont le même nom et le même type dans les deux jeux de données. Cela permettra d'éviter les erreurs et les incohérences lors de la fusion.
+結合により、特定の属性の値が一致する2つのデータセットから観測値をマッチさせることができます。データセットをマージする場合、デフォルトの構文を使用するには、両方のデータセットの属性の変数名が同じである必要があります。また、両方のデータセットのキー変数の変数タイプも同じであることが推奨されます。
 
-<?!>## Méthode 1: inner_join()
+<?!>## セクション2: left_join()関数
 
-**inner_join()** est une fonction qui retourne uniquement les lignes où il y a une correspondance entre les deux jeux de données. Si une ligne de l'un des jeux de données n'a pas de correspondance dans l'autre jeu de données, elle ne sera pas incluse dans le résultat final.
+**left_join(x, y)** は、xからすべての行と、xとyからすべての列を返します。前回のexample1とexample2データセットを使用して、今回はexample1データセットをexample2からできるだけ多くの情報を持ってくることで改善したいとします。つまり、example1データセットのすべての観測値を保持し、example2データセットの一致する観測値に新しい情報を持ってくることができます。**left_join()** はこのタスクに適しています。
 
-Exemple d'utilisation:
+<?!>## セクション3: left_join()関数の使用
 
-```
-resultat <- inner_join(dataset1, dataset2, by = "variable_cle")
-```
-
-<?!>## Méthode 2: left_join()
-
-Contrairement à **inner_join()**, la fonction **left_join()** retourne toutes les lignes du jeu de données de gauche et les colonnes correspondantes du jeu de données de droite. Si une ligne du jeu de données de gauche n'a pas de correspondance dans le jeu de données de droite, les valeurs des colonnes du jeu de données de droite seront remplacées par des valeurs manquantes (NA).
-
-Exemple d'utilisation:
+これを行うには、コンソールに以下を入力します。
 
 ```
-resultat <- left_join(dataset1, dataset2, by = "variable_cle")
+merged2 <- left_join(example1,example2)
 ```
 
-<?!>## Fusion avec des variables clés différentes
+Rは `Joining, by = c("gvkey", "fyear")` を返します。
 
-Dans certains cas, les variables clés dans les deux jeux de données peuvent avoir des noms différents. Pour spécifier les variables correspondantes lors de l'utilisation de **left_join()**, utilisez l'argument `by = c("keyvar1" = "keyvar2")`.
+<?!>## セクション4: left_join()関数の説明
 
-Exemple d'utilisation:
+結合属性の値が一致する場合、**left_join()** は両方のデータセットに表示される情報をリンクします。片方のデータセットに一致する観測値がない場合、左データセットの観測値は結果のマージデータセットに保持されますが、右データセットの観測値は結果のデータセットに保持されません。これが、2014年と2015年のAARコーポレーションに対して資産と売上が欠けている理由です。example2データセットはこれらの年をカバーしていません（2016年から2018年までの会計年度が対象です）。
+
+<?!>## セクション5: 非1対1マッチング
+
+2つのデータセットのキー変数がそれぞれのデータセット内で観測値を一意に識別する場合、このようなマージは1対1マージと呼ばれます。ただし、2つのデータセットの観測値をマッチさせるための基準となる属性（つまり、列）は、両方のデータセットに対してキー変数である必要はありません。このような状況では、1つのデータセットの観測値が、非1対1マッチングを介して他のデータセットの複数の観測値とマッチすることができます。
+
+<?!>## セクション6: 非1対1マッチングの例
+
+例えば、2つのデータセットがあります。最初のデータセットは、完全な北米株式市場1994-2018.rdsデータセットのサブセットです。example3.rdsは、fyear == 2016のすべての観測値のgvkey、fyear、および業界コード（naicsh）を含みます。また、以下のようにしてexample3を簡単に作成できます。
 
 ```
-resultat <- left_join(dataset1, dataset2, by = c("variable_cle1" = "variable_cle2"))
+example3 <- companies %>%
+filter(fyear==2016, !is.na(naicsh)) %>%
+select(gvkey, fyear, conm, naicsh)
 ```
 
-<?!>## Points à considérer lors de la fusion
+<?!>## セクション7: 非1対1マッチングの実行
 
-Il est possible d'avoir une correspondance non-un-à-un entre les jeux de données. Dans ce cas, il est important que l'un des jeux de données dispose d'un identifiant unique pour éviter les erreurs et les duplications de données.
+NAICS_2_6_digit_codes.rdsには、2,200以上の業界（2桁から6桁レベルまで）のNAICSコードと業界の説明が含まれています。これはCanvasで提供されています。2つのデータセットをマージして、各観測値に次の変数が含まれるようにします。gvkey、fyear、naicsh、およびNAICS_description。これにより、Example3データセットのすべての観測値に業界の説明が追加されることになります。
 
-En résumé, la fusion de jeux de données est une étape cruciale dans le traitement et l'analyse des données. Les fonctions **inner_join()** et **left_join()** sont des outils puissants pour combiner des informations provenant de différentes sources et les structurer de manière cohérente.
+これを行うには、コンソールに以下を入力します。
+
+```
+merged3 <- left_join(example3, NAICS_2_6_digit_codes, by = c("naicsh" = "NAICS"))
+```
+
+結果として表示されるものは次のようになります。
