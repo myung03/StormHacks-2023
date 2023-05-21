@@ -1,0 +1,24 @@
+## Introduction aux systèmes d'information de gestion COMM 205
+## Leçon 23 : Fusion des ensembles de données, partie II
+
+<?!>## Méthodes de fusion des ensembles de données
+
+Il existe **deux méthodes** pour fusionner des ensembles de données : **inner_join()** et **left_join()**. La fusion consiste à associer des observations en fonction de valeurs correspondantes dans un attribut ou plusieurs attributs particuliers.
+
+<?!>### Conditions préalables à la fusion
+
+Avant de procéder à la fusion, assurez-vous que les **noms de variables** et les **types de variables clés** dans les deux ensembles de données sont les mêmes. Cela permettra une fusion correcte des données.
+
+<?!>## La méthode left_join()
+
+La méthode **left_join()** renvoie toutes les lignes de x et toutes les colonnes de x et y. Cette méthode est particulièrement utile lorsque vous souhaitez conserver toutes les informations de l'ensemble de données x, tout en ajoutant les informations pertinentes de l'ensemble de données y.
+
+<?!>## Correspondance non un-à-un
+
+Il est possible d'avoir une correspondance **non un-à-un** lorsque les attributs utilisés pour la correspondance ne sont pas des variables clés pour les deux ensembles de données. Dans de tels cas, il est important d'utiliser des variables uniques pour effectuer la fusion.
+
+<?!>## Fusion dans des situations de correspondance non un-à-un
+
+Dans les situations de correspondance non un-à-un, il est recommandé d'utiliser des **variables uniques** pour effectuer la fusion. Cela garantira que les données fusionnées sont correctes et cohérentes.
+
+En résumé, pour fusionner des ensembles de données, il est important de comprendre les méthodes de fusion **inner_join()** et **left_join()**, de s'assurer que les noms et les types de variables clés sont les mêmes et d'utiliser des variables uniques pour effectuer la fusion dans des situations de correspondance non un-à-un.

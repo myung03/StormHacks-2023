@@ -75,7 +75,7 @@ function App() {
   //sets language for lesson to be in
   const onLanguageChange = (str) => {
     setLanguage(str);
-  
+
     // Make a POST request to update the language on the server
     fetch('http://localhost:5174/language', {
       method: 'POST',
@@ -87,6 +87,16 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data); // Optional: handle the response from the server
+
+        // Fetch the new lesson content file
+        fetch(`http://localhost:5174/generatedlessoncontent${str}.txt`)
+          .then(response => response.text())
+          .then(data => {
+            const splitData = data.split('<?!>');
+            splitData.push("## You completed this **Lesson**");
+            setSections(splitData);
+          })
+          .catch(err => console.error(err));
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -169,18 +179,18 @@ function App() {
 
   <TabPanels>
     <TabPanel>
-      <p>Placeholder Name will provide a lesson in English.</p>
+      <p>NeuralProf will provide a lesson in English.</p>
     </TabPanel>
     <TabPanel>
-      <p>Placeholder Name donnera une leçon en français.</p>
+      <p>donnera une leçon en français.</p>
 
     </TabPanel>
     <TabPanel>
-      <p>Placeholder Name 会用中文上课。</p>
+      <p>会用中文上课。</p>
 
     </TabPanel>
     <TabPanel>
-      <p>Placeholder Name wird eine Unterrichtsstunde auf Deutsch geben.</p>
+      <p>wird eine Unterrichtsstunde auf Deutsch geben.</p>
 
     </TabPanel>
     <TabPanel>
