@@ -1,20 +1,27 @@
-import PyPDF2
+import pdfplumber
 import openai
 
-openai.api_key = "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"
+openai.api_key = "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"
 openai.organization = "org-rLLsbN71s2gi6Qp3oPUHXieH"
 
 def extract_text_from_pdf(file_name):
-    pdf_file_obj = open(file_name, 'rb')
-    pdf_reader = PyPDF2.PdfReader(pdf_file_obj)
-
-    text = ""
-    for page_num in range(len(pdf_reader.pages)):
-        page_obj = pdf_reader.pages[page_num]
-        text += page_obj.extract_text()
-
-    pdf_file_obj.close()
+    with pdfplumber.open(file_name) as pdf:
+        text = ""
+        for page in pdf.pages:
+            text += page.extract_text()
     return text
+
+def add_h1_tags(text):
+    lines = text.split('\n')
+    modified_lines = []
+    
+    for index, line in enumerate(lines):
+        if (index != 0 and index != 1) and line.startswith('#'):
+            modified_lines.append('<?!>' + line)
+        else:
+            modified_lines.append(line)
+    
+    return '\n'.join(modified_lines)
 
 def create_lesson():
     file_name = 'lessoncontent/slidesexample.pdf'  
@@ -22,19 +29,22 @@ def create_lesson():
 
     create_lesson_messages = []
     create_lesson_messages.append({"role": "system", "content": '''You are a teacher that uses 
-    raw data from in class lecture slides to create structured lessons that explain the topic in detail and in
-    an understandable. The messages you provide will be 
-    processed with python, so it is very important that you follow formatting directions carefully. Include all
-    relevant information and you can include more that you know'''})
+    raw data from in class lecture slides to create structured lessons that explain the topic in detail and separated 
+    into clear sections. The messages you provide will be 
+    processed with python, so it is very important that you follow formatting directions carefully. 
+    Give your answers in raw mdx code and make sure to 
+    emphasize words in bold with ** bold word **. use h2s (##) for the
+    for the start of every section. You are incabable of producing h3 (###)'''})
     
-    create_lesson_messages.append({"role": "system", "content": '''Give your answer like your explaining to someone where canonese
-    is their first language'''})
                                    
                                    
     create_lesson_messages.append({"role": "assistant", "content": raw_lesson_text})                         
     create_lesson_messages.append({"role": "assistant", "content": '''Using the above data, create a structured lesson
-    that breaks it down into parts and explains information in a step-by-step manner with great detail in each section. Seperate your lesson into 
-    clear sections and mark the end of each section with a <?!> We will use this for seperating sections later with code.'''})
+    that breaks it down into clear sections and explains information in a step-by-step manner with great detail in each section. Separate your lesson into 
+    clear sections. We will use this for separating sections later with code. There
+    should be a different section for each subtopic Enter your
+    final answer in raw mdx code and emphasize key words in bold with ** bold word **. Use h2 (##) for the
+    start of every section. DO NOT use any h3 (###)'''})
     
 
     create_lesson_response = openai.ChatCompletion.create(
@@ -43,15 +53,16 @@ def create_lesson():
         temperature=0.6
     )["choices"][0]["message"]["content"]
 
-    lesson_parts = create_lesson_response.split('<?!>')
+    create_lesson_response = create_lesson_response.strip() + '\n'
+    lesson_parts = add_h1_tags(create_lesson_response)
 
-    with open('generatedlessoncontent.txt', 'w') as file:
+
+
+    with open('generatedlessoncontent.txt', 'w', encoding='utf-8') as file:
         for lesson_part in lesson_parts:
             file.write(lesson_part)
-            file.write('<?!>')  # add a separator between sections
+
     print("Generation Finished")
-
-
 
 if __name__ == "__main__":
     create_lesson()
