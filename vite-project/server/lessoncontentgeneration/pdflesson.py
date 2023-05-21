@@ -4,6 +4,9 @@ import os
 import glob
 import sys
 
+file_path = sys.argv[1]
+language = sys.argv[2]
+
 openai.api_key = "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"
 openai.organization = "org-rLLsbN71s2gi6Qp3oPUHXieH"
 
@@ -52,10 +55,11 @@ def create_lesson():
     should be a different section for each subtopic Enter your
     final answer in raw mdx code and emphasize key words in bold with ** bold word **. Use h2 (##) for the
     start of every section. DO NOT use any h3 (###)'''})
+    create_lesson_messages.append({"role": "assistant", "content": "GIve your answer in " + language})
     
 
     create_lesson_response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=create_lesson_messages,
         temperature=0.6
     )["choices"][0]["message"]["content"]
