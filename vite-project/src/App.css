@@ -61,21 +61,12 @@
   background-color: #f9f9f9;
 }
 
-.loading-screen-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
 .loading-screen {
   text-align: center;
-  color: #ffffff;
+  color: #000000;
 }
 
 .loading-screen p {
-  margin-top: 1rem;
   font-size: 1.2rem;
 }
 
