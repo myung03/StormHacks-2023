@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
 .main {
   width: 100vw;
   display: flex;
@@ -23,10 +26,24 @@
 }
 
 .gradient {
-color: rgb(124,215,223);
-color: linear-gradient(90deg, rgba(124,215,223,1) 13%, rgba(208,255,214,1) 70%);
+  background: #7CD7E9;
+  background: linear-gradient(to right, #7CD7E9 0%, #3E6ACF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
 }
 
 .input {
   border-style: none;
+}
+
+.file-drop-area {
+  border: 2px dashed #aaa;
+  padding: 50px; /* Adjust the padding to increase the area size */
+  text-align: center;
+  cursor: pointer;
+}
+
+.file-drop-area-active {
+  background-color: #f9f9f9;
 }
