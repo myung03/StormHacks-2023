@@ -65,9 +65,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Adjust this value based on your layout */
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .loading-screen {
   text-align: center;
+  color: #ffffff;
+}
+
+.loading-screen p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.loading-spinner {
+  margin-bottom: 1rem;
+}
+
+.loading-message {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
