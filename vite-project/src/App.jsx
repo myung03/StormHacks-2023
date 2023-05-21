@@ -124,7 +124,7 @@ function App() {
 
   <TabPanels>
     <TabPanel>
-      <p>Placeholder Name will provide a lesson in English.</p>
+      <p>Neural Prof will provide a lesson in English.</p>
     </TabPanel>
     <TabPanel>
       <p>Placeholder Name donnera une leçon en français.</p>
