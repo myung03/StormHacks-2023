@@ -109,7 +109,8 @@ function Sec({ text, handleNextSection }) {
         </ReactMarkdown>
       </div>
       {showSubsection && (
-        <div className="chat-container slide-bottom" id="chat-container">
+        <div className="chat-container slide-bottom glassmorphism" id="chat-container">
+          <h4 className='pb-5'>Still confused? <strong>Feel free to ask!</strong></h4>
         <Button
           className="collapse-button"
           onClick={toggleSubsection}
