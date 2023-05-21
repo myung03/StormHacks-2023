@@ -12,7 +12,7 @@ function App() {
   const inputFile = useRef(null);
   useEffect(() => {
     // Using fetch to get the data from your server/file.
-    fetch('http://localhost:5173/lessoncontentgeneration/generatedlessoncontent.txt')
+    fetch('http://localhost:5174/generatedlessoncontent.txt')
       .then(response => response.text())
       .then(data => {
         const splitData = data.split('<?!>');
@@ -46,6 +46,8 @@ function App() {
   };
 
   const handleProcessFile = () => {
+    event.stopPropagation();
+  
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
@@ -58,6 +60,15 @@ function App() {
         .then((response) => response.json())
         .then((data) => {
           console.log(data); // Handle the response from the server
+  
+          // Fetch the updated generated content
+          fetch('http://localhost:5174/generatedlessoncontent.txt')
+            .then(response => response.text())
+            .then(data => {
+              const splitData = data.split('<?!>');
+              setSections(splitData.slice(0, -1));
+            })
+            .catch(err => console.error(err));
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -86,33 +97,29 @@ function App() {
           </div>
 
           <div className="file-upload">
-      <div
-        className={`file-drop-area ${selectedFile ? 'file-drop-area-active' : ''}`}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        ref={inputFile}
-        onClick={onButtonClick}
-      >
-        {selectedFile ? (
-          <div className='mt-5 font-medium'>
-            <h3>{selectedFile.name}</h3>
-            <div className="mt-5 ml-3 flex gap-[20px] items-center justify-center">
-              <Button leftIcon={<CloseIcon />} onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
-              <Button rightIcon={<EditIcon />} onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
+            <div
+              className={`file-drop-area ${selectedFile ? 'file-drop-area-active' : ''}`}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <p>Drag and drop a PDF file here, or <span className="file-upload-prompt">click to select a file</span>.</p>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(event) => handleFileUpload(event.target.files[0])}
+                className='input-file'
+              />
+              {selectedFile ? (
+                <div className='mt-5 font-medium'>
+                  <h3>{selectedFile.name}</h3>
+                  <div className="mt-5 ml-3 flex gap-[20px] items-center justify-center">
+                    <Button leftIcon={<CloseIcon />} onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
+                    <Button rightIcon={<EditIcon />} onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
-        ) : (
-          <p>Drag and drop a PDF file here.</p>
-        )}
-      </div>
-      <input
-        type="file"
-        accept=".pdf"
-        ref={inputFile}
-        onChange={(event) => handleFileUpload(event.target.files[0])}
-        className='hidden p-[50px]'
-      />
-    </div>
 
         {sections.slice(0, currentSection + 1).map((section, index) => 
           <Sec key={index} text={section} handleNextSection={handleNextSection} />)} 
