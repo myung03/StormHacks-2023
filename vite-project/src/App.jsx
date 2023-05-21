@@ -49,17 +49,6 @@ function App() {
         console.error('Error:', error);
       });
   };
-  
-  const onButtonClick = () => {
-    inputFile.current.click();
-  };
-
-  const handleClick = (index) => {
-    const nextSectionRef = sectionRefs.current[index + 1];
-    if (nextSectionRef) {
-      nextSectionRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const handleFileUpload = (file) => {
     setSelectedFile(file);
