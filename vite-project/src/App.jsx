@@ -17,16 +17,7 @@ function App() {
 
 
 
-  useEffect(() => {
-    fetch('http://localhost:5174/generatedlessoncontent.txt')
-      .then(response => response.text())
-      .then(data => {
-        const splitData = data.split('<?!>');
-        splitData.push("## You completed this **Lesson**")
-        setSections(splitData);
-      })
-      .catch(err => console.error(err));
-  }, []);
+
 
     
   const onButtonClick = () => {
