@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Sec from './components/Sec';
 import Stack from './components/Stack';
 import './App.css';
+import logo from '../neuralproflogo.png'; // adjust the path as needed
 
 function App() {
   const [sections, setSections] = useState([]);
@@ -15,25 +16,58 @@ function App() {
   const inputFile = useRef(null);
   const componentRefs = useRef([]);
 
-  useEffect(() => {
-    fetch('http://localhost:5174/generatedlessoncontent.txt')
-      .then(response => response.text())
-      .then(data => {
-        const splitData = data.split('<?!>');
-        splitData.push("## You completed this **Lesson**")
-        setSections(splitData);
-      })
-      .catch(err => console.error(err));
-  }, []);
+
+
+
+
+    
+  const onButtonClick = () => {
+    inputFile.current.click();
+  };
+
+
 
   const handleNextSection = () => {
     setCurrentSection(currentSection + 1);
   };
 
+  const handleProcessFile = () => {
+    event.stopPropagation();
+
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      setIsLoading(true); // Set isLoading to true
+
+      fetch('http://localhost:5174/uploads', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          fetch('http://localhost:5174/generatedlessoncontent.txt')
+            .then(response => response.text())
+            .then(data => {
+              const splitData = data.split('<?!>');
+              splitData.push("## You completed this **Lesson**")
+              setSections(splitData);
+              setIsLoading(false); // Set isLoading to false after data is updated
+            })
+            .catch(err => console.error(err));
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          setIsLoading(false); // Set isLoading to false in case of error
+        });
+    }
+  };
+
   //sets language for lesson to be in
   const onLanguageChange = (str) => {
     setLanguage(str);
-  
+
     // Make a POST request to update the language on the server
     fetch('http://localhost:5174/language', {
       method: 'POST',
@@ -45,6 +79,16 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data); // Optional: handle the response from the server
+
+        // Fetch the new lesson content file
+        fetch(`http://localhost:5174/generatedlessoncontent${str}.txt`)
+          .then(response => response.text())
+          .then(data => {
+            const splitData = data.split('<?!>');
+            splitData.push("## You completed this **Lesson**");
+            setSections(splitData);
+          })
+          .catch(err => console.error(err));
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -105,12 +149,18 @@ function App() {
   };
 
   const handleClearFile = (event) => {
-    event.preventDefault();
+    event.stopPropagation();
     setSelectedFile(null);
-  };
+    if (inputFile && inputFile.current) {
+        inputFile.current.value = '';
+    }
+};
 
   return (
     <div className='main'>
+      <div className='header'>
+      <img src={logo} className='logo' alt="Logo" />
+      </div>
     
       <Stack>
       <Tabs className='mt-[-60px] my-[60px]'>
@@ -124,18 +174,18 @@ function App() {
 
   <TabPanels>
     <TabPanel>
-      <p>Neural Prof will provide a lesson in English.</p>
+      <p>NeuralProf will provide a lesson in English.</p>
     </TabPanel>
     <TabPanel>
-      <p>Placeholder Name donnera une leçon en français.</p>
+      <p>donnera une leçon en français.</p>
 
     </TabPanel>
     <TabPanel>
-      <p>Placeholder Name 会用中文上课。</p>
+      <p>会用中文上课。</p>
 
     </TabPanel>
     <TabPanel>
-      <p>Placeholder Name wird eine Unterrichtsstunde auf Deutsch geben.</p>
+      <p>wird eine Unterrichtsstunde auf Deutsch geben.</p>
 
     </TabPanel>
     <TabPanel>

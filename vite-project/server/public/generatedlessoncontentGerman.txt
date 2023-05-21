@@ -1,0 +1,35 @@
+## Einführung in die Verwaltung von Informationssystemen
+## Vorlesung 23: Zusammenführen von Datensätzen, Teil II
+
+<?!>## Zusammenführen von Datensätzen
+In diesem Kurs behandeln wir zwei Methoden zum Zusammenführen von Datensätzen:
+1. **inner_join()**
+2. **left_join()**
+
+Das Zusammenführen ermöglicht es uns, Beobachtungen aus zwei Datensätzen auf der Grundlage von übereinstimmenden Werten in einem bestimmten Attribut oder Attributen zu verknüpfen. Bei der Zusammenführung von zwei Datensätzen sollten die Variablennamen der Attribute in beiden Datensätzen gleich sein, um die Standardsyntax zu verwenden. Es wird auch empfohlen, dass der Variablentyp der Schlüsselvariablen in beiden Datensätzen ebenfalls gleich ist.
+
+<?!>## Die left_join() Funktion
+**left_join(x, y)** gibt alle Zeilen von x und alle Spalten von x und y zurück. Nehmen wir die gleichen Beispiel1- und Beispiel2-Datensätze wie zuvor. Angenommen, Sie möchten den Beispiel1-Datensatz verbessern, indem Sie so viele Informationen wie möglich aus dem Beispiel2-Datensatz übernehmen. In diesem Fall möchten Sie alle Beobachtungen im Beispiel1-Datensatz behalten und neue Informationen für die passenden Beobachtungen im Beispiel2-Datensatz mitbringen. Die **left_join()** Funktion ist für diese Aufgabe geeignet.
+
+<?!>## Die left_join() Funktion
+Um dies zu tun, geben Sie in die Konsole ein:
+merged2 <- left_join(example1,example2)
+
+<?!>## Die left_join() Funktion
+Bei übereinstimmenden Werten des Verbindungsattributs - in diesem Fall der Kombination aus gvkey und fyear - verknüpft **left_join()** die Informationen, die in beiden Datensätzen erscheinen. Die Beobachtungen im "linken" Datensatz, die keine passenden Beobachtungen im anderen Datensatz haben, werden im resultierenden zusammengeführten Datensatz aufbewahrt, während die Beobachtungen im "rechten" Datensatz, die keine passenden Beobachtungen im anderen Datensatz haben, nicht im resultierenden Datensatz aufbewahrt werden.
+
+<?!>## Nicht-One-to-One-Matching
+Wenn Sie zwei Datensätze zusammenführen, deren Schlüsselvariablen jede Beobachtung innerhalb des Datensatzes eindeutig identifizieren, wird diese Art von Zusammenführung als One-to-One-Merge bezeichnet. Die Attribute, die als Basis für das Abgleichen der Beobachtungen in zwei Datensätzen verwendet werden, müssen jedoch nicht für beide Datensätze Schlüsselvariablen sein. In solchen Situationen kann eine Beobachtung in einem Datensatz mit mehreren Beobachtungen im anderen Datensatz über nicht-One-to-One-Matching übereinstimmen. Die Variable oder Variablen, die für das Zusammenführen verwendet werden, sollten jedoch mindestens einen der Datensätze eindeutig identifizieren.
+
+<?!>## Nicht-One-to-One-Matching
+Angenommen, Sie haben zwei Datensätze, der erste ist eine Teilmenge des vollständigen Nordamerika-Aktienmarkt-Datensatzes von 1994 bis 2018. Beispiel3.rds enthält gvkey, fyear und Branchencode (naicsh) aller Beobachtungen in fyear==2016. Wir können auch Beispiel3 ganz einfach erstellen:
+
+<?!>## Nicht-One-to-One-Matching
+Beispiel3 soll nun mit dem NAICS_2_6_digit_codes.rds Datensatz zusammengeführt werden, der den NAICS-Code und die Branchenbeschreibung für mehr als 2.200 Branchen (von der 2- bis zur 6-stelligen Ebene) enthält. Ziel ist es, die Branchenbeschreibung jeder Beobachtung im Beispiel3-Datensatz hinzuzufügen.
+
+<?!>## Nicht-One-to-One-Matching
+Um dies zu tun, geben Sie in die Konsole ein:
+merged3 <- left_join(example3, NAICS_2_6_digit_codes, by = c("naicsh" = "NAICS"))
+
+<?!>## Nicht-One-to-One-Matching
+Als Ergebnis sollten Sie Folgendes sehen:

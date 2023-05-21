@@ -42,6 +42,7 @@ function Sec({ text, handleNextSection, lastSection, conclusion}) {
   const handleInputChange = (e) => {
     setInputText(e.target.value);
   };
+  
 
   const handleSend = async () => {
     if (inputText) {
@@ -50,6 +51,8 @@ function Sec({ text, handleNextSection, lastSection, conclusion}) {
         message: inputText,
         type: 'user-message',
       };
+
+      setInputText('');
   
       const updatedHistory = [...chatHistory, userMessage];
       setChatHistory(updatedHistory);
@@ -176,7 +179,7 @@ function Sec({ text, handleNextSection, lastSection, conclusion}) {
         </div>
         <div className="chat-input">
           <textarea
-            placeholder="Input text here..."
+            placeholder="Write your question..."
             value={inputText}
             onChange={handleInputChange}
           ></textarea>
