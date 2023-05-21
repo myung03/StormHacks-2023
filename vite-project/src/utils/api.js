@@ -11,9 +11,10 @@ export async function createChatMessage(inputText, text) {
       model: 'gpt-3.5-turbo',
       max_tokens: 50,
       messages: [
-        { role: 'system', content: "you are a teacher that is teaching topic about. Answer concisely and assume questions are refering to the text chunk the user provides you unless the information is not in the text chunk"},
+        { role: 'system', content: "you are a teacher that is teaching topic about. Answer concisely and assume questions are refering to the text chunk the user provides you unless the information is not in the text chunk. Talk in the language of the text chunk"},
         { role: 'user', content: text },
-        { role: 'user', content: inputText }],
+        { role: 'user', content: inputText },
+        { role: 'user', content: "give your answer in the language of the text chunk" }],
       temperature: 0.7,
       n: 1,
     }, {

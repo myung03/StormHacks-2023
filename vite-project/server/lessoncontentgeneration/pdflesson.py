@@ -48,14 +48,14 @@ def create_lesson():
     emphasize words in bold with ** bold word **. use h2s (##) for the
     start of every section. You are incapable of producing h3 (###)'''})
                                     
-    create_lesson_messages.append({"role": "assistant", "content": raw_lesson_text})                         
-    create_lesson_messages.append({"role": "assistant", "content": '''Using the above data, create a structured lesson
+    create_lesson_messages.append({"role": "user", "content": raw_lesson_text})                         
+    create_lesson_messages.append({"role": "user", "content": '''Using the above data, create a structured lesson
     that breaks it down into clear sections and explains information in a step-by-step manner with great detail in each section. Separate your lesson into 
     clear sections. We will use this for separating sections later with code. There
     should be a different section for each subtopic Enter your
     final answer in raw mdx code and emphasize key words in bold with ** bold word **. Use h2 (##) for the
     start of every section. DO NOT use any h3 (###)'''})
-    create_lesson_messages.append({"role": "assistant", "content": "GIve your answer in " + language})
+    create_lesson_messages.append({"role": "user", "content": "GIve your answer in " + language})
     
 
     create_lesson_response = openai.ChatCompletion.create(
