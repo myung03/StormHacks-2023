@@ -31,13 +31,19 @@ function App() {
 
     const handleFileUpload = (file) => {
     setSelectedFile(file);
-    // Do something with the selected file (e.g., send it to the server, process it, etc.)
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     handleFileUpload(file);
+  };
+
+  const handleProcessFile = () => {
+    if (selectedFile) {
+      //FUNCTION FOR API CALL
+      console.log('Processing file:', selectedFile);
+    }
   };
 
   const handleDragOver = (event) => {
@@ -69,11 +75,12 @@ function App() {
         onClick={onButtonClick}
       >
         {selectedFile ? (
-          <div>
+          <div className='mt-5 font-medium'>
             <h3>{selectedFile.name}</h3>
-            <button className="clear-file-button" onClick={handleClearFile}>
-              Clear File
-            </button>
+            <div className="mt-5 flex gap-[20px] items-center justify-center">
+              <Button onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
+              <Button onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
+            </div>
           </div>
         ) : (
           <p>Drag and drop a PDF file here.</p>
