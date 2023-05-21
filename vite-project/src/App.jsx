@@ -13,6 +13,7 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // Added isLoading state
   const inputFile = useRef(null);
+  const componentRefs = useRef([]);
 
   useEffect(() => {
     fetch('http://localhost:5174/generatedlessoncontent.txt')
@@ -34,6 +35,13 @@ function App() {
   }
   const onButtonClick = () => {
     inputFile.current.click();
+  };
+
+  const handleClick = (index) => {
+    const nextSectionRef = sectionRefs.current[index + 1];
+    if (nextSectionRef) {
+      nextSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleFileUpload = (file) => {
@@ -125,12 +133,20 @@ function App() {
     </TabPanel>
   </TabPanels>
 </Tabs>
-        <div>
-          <h1 className='font-extrabold leading-[3.25rem] text-4xl text-center pb-[5%]'>
-            Tired of long and confusing slides? <br></br>
-            <span className='gradient'>Create your personalized lesson today.</span>
-          </h1>
+        <div className="content">
+          <div className="content__container">
+          <h1 className='content__container__text font-extrabold leading-[3.25rem] text-4xl text-center'>
+            Tired of
+            </h1> 
+            <ul className="content__container__list">
+              <li className="content__container__list__item">long and confusing slides?</li>
+              <li className="content__container__list__item">unengaging lectures?</li>
+              <li className="content__container__list__item">dense and boring readings?</li>
+              </ul>
+          </div>
+          <h1 className='gradient font-extrabold leading-[3.25rem] text-4xl text-center pb-[5%]'>Create your personalized lesson today.</h1>
         </div>
+    
 
         <div className="pb-10 file-upload">
           <div

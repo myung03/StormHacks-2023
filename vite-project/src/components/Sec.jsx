@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Heading, Text, useDisclosure, SlideFade } from '@chakra-ui/react';
 import { ChevronUpIcon, CheckIcon, Search2Icon } from '@chakra-ui/icons';
 import ReactMarkdown from 'react-markdown';
@@ -26,7 +26,6 @@ const CustomHeading = ({ level, children }) => {
 const CustomStrong = ({ children }) => <Text as="strong">{children}</Text>;
 
 function Sec({ text, handleNextSection }) {
-  const [showSubsection, setShowSubsection] = useState(false);
   const [inputText, setInputText] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [showNextSection, setShowNextSection] = useState(true);
@@ -73,14 +72,10 @@ function Sec({ text, handleNextSection }) {
     }
   };
 
-  const toggleSubsection = () => {
-    setShowSubsection(!showSubsection);
-  };
-
   const handleNext = () => {
     handleNextSection();
-    setShowSubsection(false);
     setShowNextSection(false);
+
   };
 
   useEffect(() => {
@@ -115,8 +110,8 @@ function Sec({ text, handleNextSection }) {
       {showNextSection && <Button rightIcon={<CheckIcon/>}colorScheme='green' onClick={handleNext} className='ml-[20px] pr-7 text-center'>Next Section</Button>}
     </div>
       {onToggle && (
-        <SlideFade className="chat-container glassmorphism" in={isOpen} animateOpacity>
-        <div className="chat-container glassmorphism" id="chat-container">
+        <SlideFade  className="chat-container glassmorphism w-[50%]" in={isOpen} animateOpacity>
+        <div id="chat-container">
           <h4 className='pb-5'>Still confused? <strong>Feel free to ask!</strong></h4>
         <div className="chat-history">
           {chatHistory.map((message, index) => (
