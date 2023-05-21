@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node server/server.cjs",
+    "start": "server/server.cjs",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "heroku-postbuild": "cd server && npm install && npm run build",
