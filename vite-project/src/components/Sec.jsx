@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Heading, Text, useDisclosure, SlideFade } from '@chakra-ui/react';
-import { ChevronUpIcon, CheckIcon, Search2Icon } from '@chakra-ui/icons';
+import { CheckIcon, Search2Icon, QuestionIcon } from '@chakra-ui/icons';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import './Sec.css';
@@ -113,6 +113,7 @@ function Sec({ text, handleNextSection }) {
         <SlideFade  className="chat-container glassmorphism w-[50%]" in={isOpen} animateOpacity>
         <div id="chat-container">
           <h4 className='pb-5'>Still confused? <strong>Feel free to ask!</strong></h4>
+          <Button rightIcon={<QuestionIcon/>} colorScheme='yellow'>Quiz Me!</Button>
         <div className="chat-history">
           {chatHistory.map((message, index) => (
             <div key={index} className={`message ${message.type}`}>
