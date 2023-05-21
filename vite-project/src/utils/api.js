@@ -52,7 +52,7 @@ export async function createChatMessage(inputText, text, chatHistory) {
     }, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer API_KEY_HERE',
+        'Authorization': 'Bearer API-KEY-HERE',
       },
     });
 

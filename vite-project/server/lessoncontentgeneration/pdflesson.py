@@ -7,7 +7,7 @@ import sys
 file_path = sys.argv[1]
 language = sys.argv[2]
 
-openai.api_key = "API KEY HERE"
+openai.api_key = "API-KEY-HERE"
 openai.organization = "org-rLLsbN71s2gi6Qp3oPUHXieH"
 
 def extract_text_from_pdf(file_name):

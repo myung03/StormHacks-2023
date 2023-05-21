@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Sec from './components/Sec';
 import Stack from './components/Stack';
 import './App.css';
+import logo from '../neuralproflogo.png'; // adjust the path as needed
 
 function App() {
   const [sections, setSections] = useState([]);
@@ -157,6 +158,9 @@ function App() {
 
   return (
     <div className='main'>
+      <div className='header'>
+      <img src={logo} className='logo' alt="Logo" />
+      </div>
     
       <Stack>
       <Tabs className='mt-[-60px] my-[60px]'>
