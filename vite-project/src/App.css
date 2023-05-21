@@ -60,3 +60,14 @@
 .file-drop-area-active {
   background-color: #f9f9f9;
 }
+
+.loading-screen-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Adjust this value based on your layout */
+}
+
+.loading-screen {
+  text-align: center;
+}

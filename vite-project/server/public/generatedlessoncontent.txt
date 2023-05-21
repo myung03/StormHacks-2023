@@ -1,37 +1,20 @@
 ## Introduction
+In this lesson, we will discuss how to create a structured cover letter for a software engineering internship position. Specifically, we will analyze an example cover letter written by Kaz Tahara-Edmonds and break it down into clear sections to understand the information presented.
 
-In this lesson, we will cover the topic of merging datasets in Python. Specifically, we will cover two methods of merging datasets: `inner_join()` and `left_join()`. Merging datasets allows us to match observations from two datasets based on matching values in a particular attribute(s). It is important to note that when merging two datasets, the variable names of the attribute(s) in both datasets should be the same to use the default syntax. Additionally, it is recommended that the variable type of the key variable(s) in both datasets also be the same.
+<?!>## Background Information
+Kaz Tahara-Edmonds is a second-year Combined Major in Computer Science and Business student who is applying for a Software Engineering Summer 2023 Internship position at COMPANY_NAME in Vancouver, Canada. Kaz has 7+ years of experience designing and developing games with the Unity game engine and possesses advanced knowledge in C++, Java, Javascript, HTML, CSS, and PHP. Additionally, Kaz has experience with implementing various AI techniques in Unity, such as decision trees and finite state machines.
 
-<?!>## `left_join()` Function
+<?!>## First Paragraph
+The first paragraph of Kaz's cover letter introduces their passion for programming and using critical thinking to bring their ideas to life. They mention their experience in programming, specifically creating Minecraft mods at the age of 12, and their success in creating fully-fledged applications and first-person shooter games. Kaz emphasizes that bringing their ideas to life through software is "truly magical".
 
-The `left_join()` function returns all rows from the first dataset and all columns from both datasets. This function is suitable when you want to keep all the observations in the first dataset and bring new information for the matching observations in the second dataset.
+<?!>## Second Paragraph
+In the second paragraph, Kaz discusses their skills in Unity and their experience in designing and developing multiple mobile games from scratch. They also mention their strong understanding of algorithms and data structures, as well as their experience with mobile optimization techniques like reducing draw calls, optimizing memory usage, and minimizing script execution time. Kaz highlights their most successful title, which has over 100,000 users on the Google Play Store. They also mention their advanced knowledge in other programming languages like C++, Java, Javascript, HTML, CSS, and PHP.
 
-To use the `left_join()` function, we will use the same example datasets from before: `example1` and `example2`. Suppose this time we want to improve the `example1` dataset by bringing in as much information from the `example2` dataset as possible. 
+<?!>## Third Paragraph
+The third paragraph of Kaz's cover letter describes their experience as a QA Automation Engineer Intern at Blastworks Inc, a studio that creates social casino games. Kaz mentions that they learned how to work effectively with a team at a studio, use version control, and coordinate with developers, artists, and QA during the development process. They also highlight their responsibility in verifying the in-app store payment system that generated over $400,000 in revenue each month.
 
-To do this, we will enter the following code into the Console: 
-
-```python
-merged2 <- left_join(example1, example2)
-```
-
-Here, R will return "Joining, by = c("gvkey", "fyear")". For matching values of the joining attribute (in this case, the combination of gvkey and fyear), `left_join()` links the information appearing in both datasets. Those observations in the “left” dataset which do not have matching observations in the other dataset will be retained in the resultant merged dataset, while those observations in the “right” dataset which do not have matching observations in the other dataset will not be retained in the resultant dataset.
-
-<?!>## Non-One-to-One Matching
-
-When you merge two datasets whose key variable(s) uniquely identify each observation within the dataset, this kind of merge is called a one-to-one merge. However, the attribute(s) used as a basis of matching the observations in two datasets do not have to be key variables for both datasets. In such situations, an observation in one dataset can match with multiple observations in the other dataset through non-one-to-one matching. 
-
-Suppose we have two datasets: `example3` and `NAICS_2_6_digit_codes`. `example3` contains gvkey, fyear, and industry code (naicsh) of all observations in fyear==2016. `NAICS_2_6_digit_codes` contains the NAICS code and industry description for more than 2,200 industries (from the 2 to the 6 digit level). 
-
-We want to merge the two datasets so that each observation will have the following variables: gvkey, fyear, naicsh, and NAICS_description. This will attempt to add the industry description to every observation in the `example3` dataset.
-
-To do this, we will enter the following code into the Console:
-
-```python
-merged3 <- left_join(example3, NAICS_2_6_digit_codes, by = c("naicsh" = "NAICS"))
-```
-
-This will merge the two datasets so that each observation has the desired variables. 
+<?!>## Fourth Paragraph
+In the fourth paragraph, Kaz discusses their experience as Chief Technical Officer at a university startup called Innovenium Technologies Inc. They lead the technical direction of a social media networking app by managing a team of 16 developers working under a limited budget and timeframe. Kaz consistently reaches out to UBC clubs, startups, and students to receive feedback on new designs and features.
 
 <?!>## Conclusion
-
-In this lesson, we covered the topic of merging datasets in Python. We discussed two methods of merging datasets: `inner_join()` and `left_join()`. We also discussed the importance of having the same variable names and types when merging datasets. Lastly, we covered non-one-to-one matching and how to handle it when merging datasets.
+In conclusion, Kaz expresses their interest in working with the team at COMPANY_NAME and how this opportunity will help them pursue their passions and strengthen their skills to propel their career. They thank the reader for their time and consideration.

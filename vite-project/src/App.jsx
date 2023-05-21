@@ -1,17 +1,18 @@
-import { Button } from '@chakra-ui/react'
-import { CloseIcon, DownloadIcon, EditIcon } from '@chakra-ui/icons'
+import { Button, Spinner } from '@chakra-ui/react';
+import { CloseIcon, DownloadIcon, EditIcon } from '@chakra-ui/icons';
 import React, { useEffect, useState, useRef } from 'react';
 import Sec from './components/Sec';
 import Stack from './components/Stack';
-import './App.css'
+import './App.css';
 
 function App() {
   const [sections, setSections] = useState([]);
-  const [currentSection, setCurrentSection] = useState(0);  // Added this line
+  const [currentSection, setCurrentSection] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Added isLoading state
   const inputFile = useRef(null);
+
   useEffect(() => {
-    // Using fetch to get the data from your server/file.
     fetch('http://localhost:5174/generatedlessoncontent.txt')
       .then(response => response.text())
       .then(data => {
@@ -23,14 +24,13 @@ function App() {
 
   const handleNextSection = () => {
     setCurrentSection(currentSection + 1);
-  }
+  };
 
   const onButtonClick = () => {
-    // `current` points to the mounted file input element
     inputFile.current.click();
   };
 
-    const handleFileUpload = (file) => {
+  const handleFileUpload = (file) => {
     setSelectedFile(file);
   };
 
@@ -41,37 +41,37 @@ function App() {
       handleFileUpload(file);
     } else {
       console.error('File is not a PDF');
-      // You can also set some state here to show an error message on your UI
     }
   };
 
   const handleProcessFile = () => {
     event.stopPropagation();
-  
+
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
-  
-      // Send the file to the server using an HTTP request
+
+      setIsLoading(true); // Set isLoading to true
+
       fetch('http://localhost:5174/uploads', {
         method: 'POST',
         body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data); // Handle the response from the server
-  
-          // Fetch the updated generated content
+          console.log(data);
           fetch('http://localhost:5174/generatedlessoncontent.txt')
             .then(response => response.text())
             .then(data => {
               const splitData = data.split('<?!>');
               setSections(splitData.slice(0, -1));
+              setIsLoading(false); // Set isLoading to false after data is updated
             })
             .catch(err => console.error(err));
         })
         .catch((error) => {
           console.error('Error:', error);
+          setIsLoading(false); // Set isLoading to false in case of error
         });
     }
   };
@@ -79,12 +79,11 @@ function App() {
   const handleDragOver = (event) => {
     event.preventDefault();
   };
-  
+
   const handleClearFile = (event) => {
-     event.preventDefault(); // Prevent the default button behavior
+    event.preventDefault();
     setSelectedFile(null);
   };
-
 
   return (
     <div className='main'>
@@ -94,35 +93,43 @@ function App() {
             Tired of long and confusing slides? <br></br>
             <span className='gradient'>Create your personalized lesson today.</span>
           </h1>
-          </div>
+        </div>
 
-          <div className="file-upload">
-            <div
-              className={`file-drop-area ${selectedFile ? 'file-drop-area-active' : ''}`}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-            >
-              <p>Drag and drop a PDF file here, or <span className="file-upload-prompt">click to select a file</span>.</p>
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={(event) => handleFileUpload(event.target.files[0])}
-                className='input-file'
-              />
-              {selectedFile ? (
-                <div className='mt-5 font-medium'>
-                  <h3>{selectedFile.name}</h3>
-                  <div className="mt-5 ml-3 flex gap-[20px] items-center justify-center">
-                    <Button leftIcon={<CloseIcon />} onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
-                    <Button rightIcon={<EditIcon />} onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
-                  </div>
+        <div className="file-upload">
+          <div
+            className={`file-drop-area ${selectedFile ? 'file-drop-area-active' : ''}`}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
+            <p>Drag and drop a PDF file here, or <span className="file-upload-prompt">click to select a file</span>.</p>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(event) => handleFileUpload(event.target.files[0])}
+              className='input-file'
+            />
+            {selectedFile ? (
+              <div className='mt-5 font-medium'>
+                <h3>{selectedFile.name}</h3>
+                <div className="mt-5 ml-3 flex gap-[20px] items-center justify-center">
+                  <Button leftIcon={<CloseIcon />} onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
+                  <Button rightIcon={<EditIcon />} onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
                 </div>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
           </div>
+        </div>
 
-        {sections.slice(0, currentSection + 1).map((section, index) => 
-          <Sec key={index} text={section} handleNextSection={handleNextSection} />)} 
+        {isLoading ? ( // Show loading screen if isLoading is true
+          <div className="loading-screen">
+            <Spinner size="xl" />
+            <p>Loading...</p>
+          </div>
+        ) : (
+          sections.slice(0, currentSection + 1).map((section, index) => (
+            <Sec key={index} text={section} handleNextSection={handleNextSection} />
+          ))
+        )}
       </Stack>
     </div>
   );
