@@ -40,12 +40,25 @@ function App() {
     handleFileUpload(file);
   };
 
-  const handleProcessFile = () => {
+  const handleProcessFile = (event) => {
     if (selectedFile) {
-      //FUNCTION FOR API CALL
-      console.log('Processing file:', selectedFile);
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      // Send the file to the server using an HTTP request
+      fetch('/uploads', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data); // Handle the response from the server
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     }
-  };
+    }
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -79,8 +92,8 @@ function App() {
           <div className='mt-5 font-medium'>
             <h3>{selectedFile.name}</h3>
             <div className="mt-5 ml-3 flex gap-[20px] items-center justify-center">
-              <Button leftIcon={<CloseIcon />}onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
-              <Button rightIcon={<EditIcon />}onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
+              <Button leftIcon={<CloseIcon />} onClick={handleClearFile} colorScheme='twitter'>Clear File</Button>
+              <Button rightIcon={<EditIcon />} onClick={handleProcessFile} colorScheme='facebook'>Process File</Button>
             </div>
           </div>
         ) : (
