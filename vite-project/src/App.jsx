@@ -182,7 +182,7 @@ function App() {
         </div>
         ) : (
           sections.slice(0, currentSection + 1).map((section, index) => (
-            <Sec key={index} text={section} handleNextSection={handleNextSection} />
+            <Sec key={index} id={currentSection} text={section} handleNextSection={handleNextSection} />
           ))
         )}
       </Stack>
