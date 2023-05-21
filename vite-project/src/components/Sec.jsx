@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Heading, Text } from '@chakra-ui/react';
-import { ChevronUpIcon } from '@chakra-ui/icons';
+import { ChevronUpIcon, CheckIcon, Search2Icon } from '@chakra-ui/icons';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import './Sec.css';
@@ -92,7 +92,7 @@ function Sec({ text, handleNextSection }) {
   }, [chatHistory]);
 
   return (
-    <div className="section">
+    <div className="section sidebar">
       <div className="instruction">
         <ReactMarkdown
           plugins={[gfm]}
@@ -109,7 +109,7 @@ function Sec({ text, handleNextSection }) {
         </ReactMarkdown>
       </div>
       {showSubsection && (
-        <div className="chat-container" id="chat-container">
+        <div className="chat-container slide-bottom" id="chat-container">
         <Button
           className="collapse-button"
           onClick={toggleSubsection}
@@ -136,9 +136,9 @@ function Sec({ text, handleNextSection }) {
     )}
     <div className="button-container">
       {!showSubsection && (
-        <Button onClick={toggleSubsection}>Ask a Question</Button>
+        <Button leftIcon={<Search2Icon />}colorScheme='yellow' onClick={toggleSubsection}>Ask a Question</Button>
       )}
-      {showNextSection && <Button onClick={handleNext}>Next Section</Button>}
+      {showNextSection && <Button rightIcon={<CheckIcon/>}colorScheme='yellow' onClick={handleNext} className='ml-[20px] pr-7 text-center'>Next Section</Button>}
     </div>
   </div>
 );
