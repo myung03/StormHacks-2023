@@ -137,10 +137,12 @@ function App() {
         </div>
 
         {isLoading ? ( // Show loading screen if isLoading is true
+        <div className="loading-screen-container">
           <div className="loading-screen">
-            <Spinner size="xl" />
-            <p>Loading...</p>
+            <Spinner className="loading-spinner" size="xl" />
+            <p className="loading-message">Loading...</p>
           </div>
+        </div>
         ) : (
           sections.slice(0, currentSection + 1).map((section, index) => (
             <Sec key={index} text={section} handleNextSection={handleNextSection} />
