@@ -1,70 +1,36 @@
-## COMM 205: 情報システム管理入門
-## レクチャー23：データセットの結合、パートII
+## COMM 205: Introduction to Management Information Systems
+### Lecture 23: Merging Datasets, Part II
 
-<?!>## データセットの結合
-このコースでは、データセットを結合するための2つの方法をカバーします。
+In this lecture, we will cover the second part of Merging Datasets. We have already covered the first part in the previous lecture. In this section, we will cover two kinds of methods to merge datasets: **inner_join()** and **left_join()**. Joining allows us to match observations from two datasets based on matching values in a particular attribute(s). 
 
-1. **inner_join()**
-2. **left_join()**
+It is important to note that when merging two datasets, the variable names of the attribute(s) in both datasets should be the same to use the default syntax. It is also recommended that the variable type of the key variable(s) in both datasets also be the same.
 
-結合により、特定の属性の値が一致する2つのデータセットから観測をマッチさせることができます。データセットを結合するとき、デフォルトの構文を使用するために、両方のデータセットの属性の変数名が同じである必要があります。また、両方のデータセットのキー変数の変数タイプも同じであることが推奨されます。
+<?!>### left_join() FUNCTION
+The **left_join()** function returns all rows from x, and all columns from x and y. Let's use the same example1 and example2 datasets from before. Suppose this time, you want to improve the example1 dataset by bringing as much information from the example2 as you can. Thus, you want to keep all the observations in the example1 dataset and bring new information for the matching observations in the example2 dataset. **left_join()** is suitable for this task.
 
-<?!>## left_join()関数
-**left_join(x, y)**は、xからすべての行と、xおよびyからすべての列を返します。
-
-前回と同じexample1とexample2のデータセットを使用しましょう。今回は、example1データセットを改善するために、example2からできるだけ多くの情報を取得したいとします。
-
-そのため、example1データセットのすべての観測を保持し、example2データセットの一致する観測の新しい情報を持ってくる必要があります。このタスクには、**left_join()**が適しています。
-
-<?!>## left_join()関数の使用方法
-これを行うには、コンソールに次のように入力します。
-
+To do this, enter into the Console:
+```R
+merged2 <- left_join(example1, example2)
 ```
-merged2 <- left_join(example1,example2)
-```
+R will return "Joining, by = c("gvkey", "fyear")". For matching values of the joining attribute – in this case, the combination of gvkey and fyear, **left_join()** links the information appearing in both datasets. Those observations in the “left” dataset which do not have matching observations in the other dataset will be retained in the resultant merged dataset, while those observations in the “right” dataset which do not have matching observations in the other dataset will not be retained in the resultant dataset. This explains why assets and sales are missing for AAR corporation in 2014 and 2015. The example2 dataset does not cover those years (it runs from fiscal year 2016 through 2018).
 
-Rは、Joining, by = c("gvkey", "fyear")を返します。
+<?!>### NON-ONE-TO-ONE MATCHING
+When you merge two datasets whose key variable(s) uniquely identify each observation within the dataset, this kind of merge is called a one-to-one merge. However, the attribute(s) (i.e., column(s)) used as a basis of matching the observations in two data sets do not have to be key variables for both datasets. In such situations, an observation in one dataset can match with multiple observations in the other datasets through non-one-to-one matching. However, the variable or variable(s) to perform the merge should uniquely identify at least one of the datasets.
 
-<?!>## left_join()関数の機能
-結合属性の値が一致する場合 - この場合、gvkeyとfyearの組み合わせ - **left_join()**は、両方のデータセットに表示される情報をリンクします。
+Suppose you have two datasets, the first is a subset of the full North American Stock Market 1994-2018.rds dataset. example3.rds contains gvkey, fyear, and industry code (naicsh) of all observations in fyear==2016. We can also create example3 quite easily:
 
-"左"データセットの観測値が他のデータセットと一致しない観測値を持つ場合、その観測値は結果として得られる結合データセットに保持されますが、"右"データセットの観測値が他のデータセットと一致しない観測値を持つ場合、その観測値は結果として得られるデータセットに保持されません。
-
-これが、AARコーポレーションの2014年と2015年の資産と売上が欠けている理由です。example2データセットは、それらの年をカバーしていません（2016年から2018年までの会計年度）。
-
-<?!>## 非1対1マッチング
-2つのデータセットのキー変数がそれぞれのデータセット内の観測値を一意に識別する場合、このようなマージは1対1マージと呼ばれます。
-
-ただし、2つのデータセットの観測値をマッチさせるための基準となる属性（つまり、列）は、両方のデータセットのキー変数である必要はありません。
-
-このような状況では、1つのデータセットの観測値が、他のデータセットの複数の観測値と非1対1マッチングを通じてマッチすることができます。
-
-ただし、マージを実行するための変数または変数は、少なくとも1つのデータセットを一意に識別する必要があります。
-
-<?!>## 非1対1マッチングの例
-2つのデータセットがあり、1つ目は全米株式市場1994-2018.rdsデータセットのサブセットです。
-
-**example3.rds**には、fyear==2016のすべての観測のgvkey、fyear、および業界コード（naicsh）が含まれています。
-
-また、example3を簡単に作成することもできます。
-
-```
+```R
 example3 <- companies %>%
 filter(fyear==2016, !is.na(naicsh)) %>%
 select(gvkey, fyear, conm, naicsh)
 ```
+This is a picture of example3.
 
-これがexample3の概要です。
+NAICS_2_6_digit_codes.rds contains the NAICS code and industry description for more than 2,200 industries (from the 2 to the 6 digit level). You want to merge the two datasets, so that each observation will have the following variables: gvkey, fyear, naicsh, and NAICS_description. This will attempt to add the industry description to every observation in the Example3 dataset.
 
-<?!>## 非1対1マッチングの実行
-NAICS_2_6_digit_codes.rdsには、2,200以上の業界（2桁から6桁レベル）のNAICSコードと業界説明が含まれています。これはCanvasで提供されています。
-
-各観測値に次の変数が含まれるように、2つのデータセットをマージしたいとします：gvkey, fyear, naicsh, およびNAICS_description。これにより、Example3データセットのすべての観測に業界説明が追加されることが期待されます。
-
-これを行うには、コンソールに次のように入力します。
-
-```
+To do this, enter into the Console:
+```R
 merged3 <- left_join(example3, NAICS_2_6_digit_codes, by = c("naicsh" = "NAICS"))
 ```
 
-結果として次のように表示されます。
+Here’s what you should see as a result:

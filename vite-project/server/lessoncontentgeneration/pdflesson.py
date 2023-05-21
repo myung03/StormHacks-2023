@@ -55,15 +55,22 @@ def create_lesson():
     should be a different section for each subtopic Enter your
     final answer in raw mdx code and emphasize key words in bold with ** bold word **. Use h2 (##) for the
     start of every section. DO NOT use any h3 (###)'''})
-    create_lesson_messages.append({"role": "user", "content": "GIve your answer in " + language})
+    if language != 'English':
+        create_lesson_messages.append({"role": "user", "content": "GIve your answer in " + language})
     
-
-    create_lesson_response = openai.ChatCompletion.create(
-        model="gpt-4",
+    if language != 'English':
+        create_lesson_response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=create_lesson_messages,
+            temperature=0.6
+        )["choices"][0]["message"]["content"]
+    else:
+        create_lesson_response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
         messages=create_lesson_messages,
         temperature=0.6
     )["choices"][0]["message"]["content"]
-
+        
     create_lesson_response = create_lesson_response.strip() + '\n'
     lesson_parts = add_h1_tags(create_lesson_response)
 
